@@ -54,16 +54,73 @@ function Quiz() {
   //   arr.push(number.correct_answer)
   // })
 
-  console.log(value);
+  // console.log(value);
+
+  // value.temp_array = 
+
+  
+  value.forEach((element) => {
+    element.incorrect_answers = [...element.incorrect_answers,element.correct_answer]
+    // element.incorrect_answers.push(element.correct_answer)
+    // element.temp_array = [element.incorrect_answers]
+    // return arr.filter((item,
+    //   index) => arr.indexOf(item) === index);
+  })
+
+  // console.log(value);
+
 
   const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
     return(
       <div key={index}>
         <p>{item.question}</p>
-        <p>{item.incorrect_answers} {item.correct_answer}</p>
+        {
+          item.incorrect_answers.map((item,index) => {
+            return(
+              <div className="flex justify-center items-center">
+                <input type="radio"/>{item}
+              </div>
+            )
+          })  
+        }
+        {/* <input type="radio"/>{item.incorrect_answers} */}
+        {/* <input type="radio" id="html" name="fav_language" value="HTML">{item.incorrect_answers}</input> */}
+        {/* <input type="radio" id="html" name="fav_language" value={item.incorrect_answers}/>
+        <input type="radio" id="html" name="fav_language" value={item.correct_answers}/>  */}
+        {/* <p>{item.incorrect_answers} </p> */}
+        {/* <p>{item.correct_answer}</p>
+        <p>{item.incorrect_answers[1]}</p>
+        <p>{item.temp_array}</p> */}
       </div>
     )
   })
+
+ const displayOptions = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
+  return(
+    <div key={index}>
+      <p>
+      {
+        item.incorrect_answers.map((item,index) => {
+          return(
+            <div className="flex justify-center items-center">
+              <input type="radio"/>{item}
+            </div>
+          )
+        })
+      }
+      </p>
+      {/* <input type="radio" id="html" name="fav_language" value="HTML">{item.incorrect_answers}</input> */}
+      {/* <input type="radio" id="html" name="fav_language" value={item.incorrect_answers}/>
+      <input type="radio" id="html" name="fav_language" value={item.correct_answers}/>  */}
+      {/* <p>{item.incorrect_answers} </p> */}
+      {/* <p>{item.correct_answer}</p>
+      <p>{item.incorrect_answers[1]}</p>
+      <p>{item.temp_array}</p> */}
+    </div>
+  )
+})
+
+console.log(displayOptions)
 
   const changePage = ({ selected }) => {
     setPageNumber(selected)
@@ -76,6 +133,7 @@ function Quiz() {
     <>
       Quiz Questions
       {displayQuestion}
+      {/* {displayOptions} */}
       <ReactPaginate
         previousLabel={"Previous"}
         nextLabel={"Next"}
