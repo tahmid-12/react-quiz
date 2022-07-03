@@ -7,7 +7,7 @@ function Home() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
 
@@ -25,7 +25,7 @@ function Home() {
   // console.log("Random =>", data[random].name);
 
   const handleSubmit = () => {
-    console.log("Button Clicked.")
+    // console.log("Button Clicked.")
     navigate('/quiz');
   }
 
@@ -34,7 +34,7 @@ function Home() {
       console.log("Enter key pressed");
       navigate('/quiz');
     }else{
-      console.log(`Key pressed: ${event.key}`);
+      // console.log(`Key pressed: ${event.key}`);
     }
   }, []);
 
