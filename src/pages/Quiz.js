@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Pagination from './Pagination';
+import ReactPaginate from 'react-paginate';
+import './page.css';
 
 function Quiz() {
 
   const [question, setQuestion] = useState([]);
   const [value, setValue] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const usersPerPage = 1;
+  const pagesVisited = pageNumber * usersPerPage;
 
   const getData = async () => {
     try{
@@ -49,26 +54,38 @@ function Quiz() {
   //   arr.push(number.correct_answer)
   // })
 
-  console.log(value)
-  
+  console.log(value);
+
+  const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
+    return(
+      <div key={index}>
+        <p>{item.question}</p>
+        <p>{item.incorrect_answers} {item.correct_answer}</p>
+      </div>
+    )
+  })
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected)
+  }
+
+  const pageCount = Math.ceil(value.length / usersPerPage)
+
 
   return (
     <>
       Quiz Questions
-      {
-        value.map((item,index) => {
-          return(
-            <div key={index}>
-              <p>{++index}. {item.question}</p>
-              <p>{item.incorrect_answers} {item.correct_answer}</p>
-            </div>
-          )
-        })
-      }
-      <Pagination 
-          nPages={10}
-          currentPage={10} 
-          setCurrentPage={10}
+      {displayQuestion}
+      <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        pageCount={pageCount}
+        onPageChange={changePage}
+        containerClassName={"paginationBttns"}
+        previousLinkClassName={"previousBttn"}
+        nextLinkClassName={"nextBttn"}
+        disabledClassName={"paginationDisabled"}
+        activeClassName={"paginationActive"} 
       />
     </>
   )
