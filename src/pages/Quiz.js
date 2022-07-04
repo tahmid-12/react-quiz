@@ -58,27 +58,34 @@ function Quiz() {
 
   // value.temp_array = 
 
+  function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
   
   value.forEach((element) => {
-    element.incorrect_answers = [...element.incorrect_answers,element.correct_answer]
+    element.temp_array = [...element.incorrect_answers,element.correct_answer];
+    // shuffle(element.temp_array);
+    // console.log(element.incorrect_answers);
     // element.incorrect_answers.push(element.correct_answer)
     // element.temp_array = [element.incorrect_answers]
     // return arr.filter((item,
     //   index) => arr.indexOf(item) === index);
   })
 
-  // console.log(value);
-
+  console.log(value);
 
   const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
+    const handleChange = (e) => {
+      console.log(e.target.value)
+    }
     return(
       <div key={index}>
         <p>{item.question}</p>
         {
-          item.incorrect_answers.map((item,index) => {
+          item.temp_array.map((item,index) => {
             return(
-              <div className="flex justify-center items-center">
-                <input type="radio"/>{item}
+              <div className="flex justify-center items-center" key={index}>
+                <input type="radio" value={item} onChange={handleChange}/>{item}
               </div>
             )
           })  
@@ -95,32 +102,6 @@ function Quiz() {
     )
   })
 
- const displayOptions = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
-  return(
-    <div key={index}>
-      <p>
-      {
-        item.incorrect_answers.map((item,index) => {
-          return(
-            <div className="flex justify-center items-center">
-              <input type="radio"/>{item}
-            </div>
-          )
-        })
-      }
-      </p>
-      {/* <input type="radio" id="html" name="fav_language" value="HTML">{item.incorrect_answers}</input> */}
-      {/* <input type="radio" id="html" name="fav_language" value={item.incorrect_answers}/>
-      <input type="radio" id="html" name="fav_language" value={item.correct_answers}/>  */}
-      {/* <p>{item.incorrect_answers} </p> */}
-      {/* <p>{item.correct_answer}</p>
-      <p>{item.incorrect_answers[1]}</p>
-      <p>{item.temp_array}</p> */}
-    </div>
-  )
-})
-
-console.log(displayOptions)
 
   const changePage = ({ selected }) => {
     setPageNumber(selected)
