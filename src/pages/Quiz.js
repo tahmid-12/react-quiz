@@ -5,9 +5,10 @@ import './page.css';
 
 function Quiz() {
 
-  const [question, setQuestion] = useState([]);
   const [value, setValue] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [id, setId] = useState('');
+  let point = 0;
 
   const usersPerPage = 1;
   const pagesVisited = pageNumber * usersPerPage;
@@ -25,23 +26,6 @@ function Quiz() {
   useEffect(() => {
     getData()  
   },[]);
-
-  // useEffect(() => {
-  //   try{
-  //     (
-  //       async () => {
-  //         const {
-  //           data: { results }
-  //         } = await axios.get(`https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple`);
-
-  //         if(Array.isArray(results)){
-  //           setValue(results);
-  //         }
-  //       })();
-  //   }catch(err){
-  //     console.log(err);
-  //   }
-  // },[])
 
   // console.log("Value =>",value);
 
@@ -65,27 +49,39 @@ function Quiz() {
   value.forEach((element) => {
     element.temp_array = [...element.incorrect_answers,element.correct_answer];
     // shuffle(element.temp_array);
-    // console.log(element.incorrect_answers);
-    // element.incorrect_answers.push(element.correct_answer)
-    // element.temp_array = [element.incorrect_answers]
-    // return arr.filter((item,
-    //   index) => arr.indexOf(item) === index);
   })
 
   console.log(value);
 
   const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
     const handleChange = (e) => {
-      console.log(e.target.value)
+      if(e.target.value === item.correct_answer){
+        // console.log("Correct")
+        point++;
+        console.log("point", point);
+      }else{
+        console.log(e.target.value)
+      }
     }
+
+    const handleClick = (e) => {
+      console.log("Clicked", item.temp_array.indexOf(e.target.value))
+      setId(item.temp_array.indexOf(e.target.value));
+    }
+
     return(
       <div key={index}>
-        <p>{item.question}</p>
+        <p className="font-mono font-normal text-xl">{item.question}</p>
         {
           item.temp_array.map((item,index) => {
             return(
-              <div className="flex justify-center items-center" key={index}>
-                <input type="radio" value={item} onChange={handleChange}/>{item}
+              <div className="flex border-4 border-orange-100 m-5 p-2" key={index}>
+                <input type="radio"
+                       className="" 
+                       value={item} 
+                       name={item} 
+                       onChange={handleChange}
+                       onClick={handleClick}/> <p className="font-mono font-normal ml-5">{item}</p>
               </div>
             )
           })  
@@ -103,6 +99,9 @@ function Quiz() {
   })
 
 
+  console.log("Points", point);
+
+
   const changePage = ({ selected }) => {
     setPageNumber(selected)
   }
@@ -112,7 +111,8 @@ function Quiz() {
 
   return (
     <>
-      Quiz Questions
+     <div className="flex flex-col justify-center items-center">
+      <h3 className="font-mono font-extrabold mt-3 text-3xl">Quiz Questions</h3>
       {displayQuestion}
       {/* {displayOptions} */}
       <ReactPaginate
@@ -126,6 +126,7 @@ function Quiz() {
         disabledClassName={"paginationDisabled"}
         activeClassName={"paginationActive"} 
       />
+     </div>
     </>
   )
 }
