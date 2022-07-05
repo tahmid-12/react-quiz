@@ -7,8 +7,8 @@ function Quiz() {
 
   const [value, setValue] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
-  const [id, setId] = useState('');
-  let point = 0;
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
 
   const usersPerPage = 1;
   const pagesVisited = pageNumber * usersPerPage;
@@ -42,50 +42,57 @@ function Quiz() {
 
   // value.temp_array = 
 
-  function shuffle(array) {
-    array.sort(() => Math.random() - 0.5);
-  }
+  // function shuffle(array) {
+  //   array.sort(() => Math.random() - 0.5);
+  // }
   
   value.forEach((element) => {
     element.temp_array = [...element.incorrect_answers,element.correct_answer];
     // shuffle(element.temp_array);
   })
 
-  console.log(value);
+  console.log(value.length);
 
   const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
+    
     const handleChange = (e) => {
-      if(e.target.value === item.correct_answer){
+      console.log("Clicked", e.target.getAttribute('name'));
+      if(e.target.getAttribute('name') === item.correct_answer){
         // console.log("Correct")
-        point++;
-        console.log("point", point);
-      }else{
-        console.log(e.target.value)
+        // const [currentQuestion, setCurrentQuestion] = useState(0);
+        // point++;
+        setScore(score + 1)
+        console.log("point", score);
       }
-    }
 
-    const handleClick = (e) => {
-      console.log("Clicked", item.temp_array.indexOf(e.target.value))
-      setId(item.temp_array.indexOf(e.target.value));
+      if (currentQuestion + 1 < value.length) {
+        setCurrentQuestion(currentQuestion + 1);
+        setPageNumber(pageNumber + 1);
+      } else {
+        // setShowResults(true);
+        console.log("Finished");
+      }
     }
 
     return(
       <div key={index}>
         <p className="font-mono font-normal text-xl">{item.question}</p>
-        {
-          item.temp_array.map((item,index) => {
-            return(
-              <div className="flex border-4 border-orange-100 m-5 p-2" key={index}>
-                <input type="radio"
-                       className="" 
-                       value={item} 
-                       name={item} 
-                       onChange={handleChange}
-                       onClick={handleClick}/> <p className="font-mono font-normal ml-5">{item}</p>
-              </div>
-            )
-          })  
-        }
+          <ul className="flex flex-col mt-5">
+          {
+            item.temp_array.map((item,index) => {
+              console.log(item)
+              return(
+                  <li    key={index} 
+                          // ${index < 1 ? "hidden lg:block" : ""}
+                         className={`font-mono border-4 border-orange-100 active:bg-violet-700 font-normal mb-5 p-5`} 
+                         name={item}
+                         onClick={handleChange}> {item}
+                  </li>
+                
+              )
+            })
+          }  
+          </ul>
         {/* <input type="radio"/>{item.incorrect_answers} */}
         {/* <input type="radio" id="html" name="fav_language" value="HTML">{item.incorrect_answers}</input> */}
         {/* <input type="radio" id="html" name="fav_language" value={item.incorrect_answers}/>
@@ -99,11 +106,12 @@ function Quiz() {
   })
 
 
-  console.log("Points", point);
-
-
   const changePage = ({ selected }) => {
-    setPageNumber(selected)
+    if(selected){
+      setPageNumber(selected)
+    }else{
+      setPageNumber(pageNumber + 1)
+    }
   }
 
   const pageCount = Math.ceil(value.length / usersPerPage)
