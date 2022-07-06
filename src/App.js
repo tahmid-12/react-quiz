@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/quiz" element={<Quiz />}/>
-          <Route path="/result" element={<Result />}/>
+          <Route path="/result/:slug" element={<Result />}/>
           <Route path="*" element={<p>There's nothing here: 404!</p>} />
         </Routes>
       </div>
