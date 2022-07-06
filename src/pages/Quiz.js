@@ -82,6 +82,7 @@ function Quiz() {
           <ul className="flex flex-col mt-5">
           {
             item.temp_array.map((item,index) => {
+              // console.log(item)
               return(
                   <li    key={index} 
                           // ${index < 1 ? "hidden lg:block" : ""}
