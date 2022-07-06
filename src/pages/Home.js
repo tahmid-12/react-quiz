@@ -21,7 +21,7 @@ function Home() {
     }
   },[]);
 
-  console.log("Nameee =>", name);
+  // console.log("Nameee =>", name);
   // console.log("Random =>", data[random].name);
 
   const handleSubmit = () => {
@@ -31,7 +31,7 @@ function Home() {
 
   const handleKeyPress = useCallback((event) => {
     if(event.keyCode === 13){
-      console.log("Enter key pressed");
+      // console.log("Enter key pressed");
       navigate('/quiz');
     }else{
       // console.log(`Key pressed: ${event.key}`);

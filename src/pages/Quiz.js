@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import './page.css';
 
@@ -9,6 +10,8 @@ function Quiz() {
   const [pageNumber, setPageNumber] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+
+  const navigate = useNavigate();
 
   const usersPerPage = 1;
   const pagesVisited = pageNumber * usersPerPage;
@@ -51,26 +54,25 @@ function Quiz() {
     // shuffle(element.temp_array);
   })
 
-  console.log(value.length);
+  // console.log(value.length);
 
   const displayQuestion = value.slice(pagesVisited, pagesVisited + usersPerPage).map((item,index) => {
     
     const handleChange = (e) => {
-      console.log("Clicked", e.target.getAttribute('name'));
       if(e.target.getAttribute('name') === item.correct_answer){
         // console.log("Correct")
         // const [currentQuestion, setCurrentQuestion] = useState(0);
         // point++;
         setScore(score + 1)
-        console.log("point", score);
+        // console.log("point", score);
       }
 
       if (currentQuestion + 1 < value.length) {
         setCurrentQuestion(currentQuestion + 1);
-        setPageNumber(pageNumber + 1);
       } else {
         // setShowResults(true);
-        console.log("Finished");
+        // console.log("Finished", score);
+        navigate('/result/{score}',{ state: {score: score}});
       }
     }
 
@@ -80,7 +82,6 @@ function Quiz() {
           <ul className="flex flex-col mt-5">
           {
             item.temp_array.map((item,index) => {
-              console.log(item)
               return(
                   <li    key={index} 
                           // ${index < 1 ? "hidden lg:block" : ""}
